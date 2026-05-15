@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: false
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
 jobs:
   build-and-deploy:
@@ -20,7 +20,7 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '8.0.x'   # or 6.0.x if your project uses .NET 6
+          dotnet-version: '8.0.x'   # Change to 6.0.x if your project uses .NET 6
 
       - name: Restore dependencies
         run: dotnet restore RecruiterPortfolio/RecruiterPortfolio.csproj
@@ -31,9 +31,13 @@ jobs:
       - name: Publish
         run: dotnet publish RecruiterPortfolio/RecruiterPortfolio.csproj -c Release -o ./publish
 
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_259AA1765E3F434A8D935224765ADA60 }}
+
       - name: Deploy to Azure WebApp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'RecruiterPortfolio'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
           package: ./publish
