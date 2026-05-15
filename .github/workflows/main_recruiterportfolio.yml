@@ -1,4 +1,4 @@
-name: Build and deploy ASP.NET Core app to Azure WebApp
+name: Build and Deploy ASP.NET Core app to Azure WebApp
 
 on:
   push:
@@ -20,20 +20,20 @@ jobs:
       - name: Setup .NET
         uses: actions/setup-dotnet@v4
         with:
-          dotnet-version: '6.0.x'   # or 8.0.x if your project uses .NET 8
+          dotnet-version: '8.0.x'   # Change to 6.0.x if your project uses .NET 6
 
       - name: Restore dependencies
-        run: dotnet restore
+        run: dotnet restore RecruiterPortfolio/RecruiterPortfolio.csproj
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore
+        run: dotnet build RecruiterPortfolio/RecruiterPortfolio.csproj --configuration Release --no-restore
 
       - name: Publish
-        run: dotnet publish -c Release -o ./publish
+        run: dotnet publish RecruiterPortfolio/RecruiterPortfolio.csproj -c Release -o ./publish
 
       - name: Deploy to Azure WebApp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'RecruiterPortfolio'
-          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_259AA1765E3F434A8D935224765ADA60 }}
           package: ./publish
