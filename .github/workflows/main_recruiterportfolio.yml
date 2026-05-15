@@ -31,13 +31,9 @@ jobs:
       - name: Publish
         run: dotnet publish RecruiterPortfolio/RecruiterPortfolio.csproj -c Release -o ./publish
 
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_259AA1765E3F434A8D935224765ADA60 }}
-
       - name: Deploy to Azure WebApp
         uses: azure/webapps-deploy@v3
         with:
           app-name: 'RecruiterPortfolio'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_259AA1765E3F434A8D935224765ADA60 }}
           package: ./publish
