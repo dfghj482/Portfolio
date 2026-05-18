@@ -60,9 +60,9 @@
     const overlay = document.getElementById('overlay');
     const closeBtn = document.getElementById('closeBtn');
 
-    // Only manual close with X button
+    // When X is clicked, redirect to Index.cshtml
     closeBtn.addEventListener('click', () => {
-      overlay.style.display = 'none';
+      window.location.href = "/Index"; // Razor Page route
     });
   </script>
 </body>
